@@ -2,7 +2,6 @@
 
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
-import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin"
 
 import react from "@astrojs/react";
 
