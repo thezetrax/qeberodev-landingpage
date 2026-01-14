@@ -1,7 +1,10 @@
 ---
 import "../styles/global.css";
-import { Button } from "@/components/ui/button";
+
 import { ArrowUpIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+import { ModeToggle } from "@/components/ModeToggle";
 ---
 
 <script is:inline>
@@ -15,18 +18,18 @@ import { ArrowUpIcon } from "lucide-react";
   };
 
   const isDark = getThemePreference() === "dark";
-  document.documentElement.classList[isDark ? 'add' : 'remove']('dark')
+  document.documentElement.classList[isDark ? "add" : "remove"]("dark");
 
-  if (typeof localStorage !== 'undefined') {
+  if (typeof localStorage !== "undefined") {
     const observer = new MutationObserver(() => {
-        const isDark = document.documentElement.classList.contains('dark')
-        localStorage.setItem('theme', isDark ? 'dark' : 'light')
-    })
+      const isDark = document.documentElement.classList.contains("dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    });
 
     observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['class']
-    })
+      attributes: true,
+      attributeFilter: ["class"],
+    });
   }
 </script>
 
@@ -44,6 +47,8 @@ import { ArrowUpIcon } from "lucide-react";
       <Button className="cursor-pointer" size="icon">
         <ArrowUpIcon />
       </Button>
+
+      <ModeToggle client:load />
 
       <a href="/markdown-page" class="p-4 underline"
         >Markdown is also supported...</a
