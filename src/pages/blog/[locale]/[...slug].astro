@@ -1,0 +1,28 @@
+---
+import MainLayout from "../../../layouts/main.astro";
+
+import type { GetStaticPaths } from "astro";
+import { getEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
+
+export const getStaticPaths = (async () => {
+    return (await getCollection("blog"))
+        .map((p) => p.id)
+        .map((pid) => ({
+            // For now only English locale is supported
+            params: { locale: "en", slug: pid },
+        }));
+}) satisfies GetStaticPaths;
+
+const { locale, slug } = Astro.params;
+
+const postEntry = await getEntry("blog", slug);
+if (!postEntry) throw new Error(`Blog post not found: ${slug}`);
+
+const { Content } = await render(postEntry);
+---
+
+<MainLayout title={postEntry.data.title}>
+    <h1>{postEntry.data.datetime.toLocaleString()}</h1>
+    <Content class="simple" />
+</MainLayout>
