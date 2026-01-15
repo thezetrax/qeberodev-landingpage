@@ -1,5 +1,6 @@
 ---
-import MainLayout from "../../../layouts/main.astro";
+import MainLayout from "@/layouts/main.astro";
+import MarkdownPreview from "@/layouts/markdown-preview.astro";
 
 import type { GetStaticPaths } from "astro";
 import { getEntry } from "astro:content";
@@ -10,6 +11,7 @@ export const getStaticPaths = (async () => {
         .map((p) => p.id)
         .map((pid) => ({
             // For now only English locale is supported
+            // TODO: add support for other locales using the i18n module
             params: { locale: "en", slug: pid },
         }));
 }) satisfies GetStaticPaths;
@@ -23,6 +25,9 @@ const { Content } = await render(postEntry);
 ---
 
 <MainLayout title={postEntry.data.title}>
-    <h1>{postEntry.data.datetime.toLocaleString()}</h1>
-    <Content class="simple" />
+    <h1>What the fuck</h1>
+
+    <MarkdownPreview>
+        <Content />
+    </MarkdownPreview>
 </MainLayout>
