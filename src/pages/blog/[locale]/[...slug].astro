@@ -1,0 +1,33 @@
+---
+import MainLayout from "@/layouts/main.astro";
+import MarkdownPreview from "@/layouts/markdown-preview.astro";
+
+import type { GetStaticPaths } from "astro";
+import { getEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
+
+export const getStaticPaths = (async () => {
+    return (await getCollection("blog"))
+        .map((p) => p.id)
+        .map((pid) => ({
+            // For now only English locale is supported
+            // TODO: add support for other locales using the i18n module
+            params: { locale: "en", slug: pid },
+        }));
+}) satisfies GetStaticPaths;
+
+const { locale, slug } = Astro.params;
+
+const postEntry = await getEntry("blog", slug);
+if (!postEntry) throw new Error(`Blog post not found: ${slug}`);
+
+const { Content } = await render(postEntry);
+---
+
+<MainLayout title={postEntry.data.title}>
+    <h1>What the fuck</h1>
+
+    <MarkdownPreview>
+        <Content />
+    </MarkdownPreview>
+</MainLayout>
